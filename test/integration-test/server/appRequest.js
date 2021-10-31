@@ -7,4 +7,4 @@ const app = expressApp()
 chai.use(chaiHttp)
 const appRequest = chai.request(app).keepOpen()
 
-module.exports = appRequest
+exports.appRequest = appRequest

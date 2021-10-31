@@ -1,6 +1,6 @@
 const { expect } = require('chai')
 
-const appRequest = require('../appRequest')
+const { appRequest } = require('../appRequest')
 
 describe('GET /heroes', function () {
   const expectHeroes = [

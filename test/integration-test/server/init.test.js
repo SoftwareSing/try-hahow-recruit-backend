@@ -1,4 +1,4 @@
-const appRequest = require('./appRequest')
+const { appRequest } = require('./appRequest')
 
 before(async function () {
   this.timeout(10000)
