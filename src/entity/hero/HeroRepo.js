@@ -6,3 +6,8 @@ exports.getList = async function () {
   const { data } = await httpSend('GET', 'https://hahow-recruit.herokuapp.com/heroes')
   return data.map((data) => new Hero(data))
 }
+
+exports.get = async function (heroId) {
+  const { data } = await httpSend('GET', `https://hahow-recruit.herokuapp.com/heroes/${heroId}`)
+  return new Hero(data)
+}

@@ -9,5 +9,11 @@ heroRouter.route('/')
   .get(getReqHandleFunc((req) => {
     return HeroController.listHeroes()
   }))
+heroRouter.route('/:heroId')
+  .get(getReqHandleFunc((req) => {
+    return HeroController.getHero({
+      heroId: req.params.heroId
+    })
+  }))
 
 exports.heroRouter = heroRouter
