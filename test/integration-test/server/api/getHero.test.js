@@ -5,6 +5,8 @@ const { httpSend } = require('~common/utils/httpSend')
 const { appRequest } = require('../appRequest')
 
 describe('GET /heroes/:heroId', function () {
+  this.timeout(10000)
+
   let heroId = ''
   let expectHero = {}
   let heroes = []

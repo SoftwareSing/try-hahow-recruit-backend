@@ -4,6 +4,8 @@ const { httpSend } = require('~common/utils/httpSend')
 const { appRequest } = require('../appRequest')
 
 describe('GET /heroes', function () {
+  this.timeout(10000)
+
   let expectHeroes = []
 
   before(async function () {
