@@ -12,7 +12,9 @@ heroRouter.route('/')
 heroRouter.route('/:heroId')
   .get(getReqHandleFunc((req) => {
     return HeroController.getHero({
-      heroId: req.params.heroId
+      heroId: req.params.heroId,
+      name: req.header('name'),
+      password: req.header('password')
     })
   }))
 

@@ -29,4 +29,27 @@ describe('GET /heroes/:heroId', function () {
     expect(res).to.have.status(200)
     expect(res.body).to.deep.equal(expectHero)
   })
+
+  describe('with auth', function () {
+    const name = 'hahow'
+    const password = 'rocks'
+    let expectProfile = {}
+
+    beforeEach(async function () {
+      ({ data: expectProfile } = await httpSend('GET', `https://hahow-recruit.herokuapp.com/heroes/${heroId}/profile`))
+    })
+
+    const getResponse = function () {
+      return appRequest.get(`/heroes/${heroId}`)
+        .set('Name', name)
+        .set('Password', password)
+        .send()
+    }
+
+    it('should return hero with profile', async function () {
+      const res = await getResponse()
+      expect(res).to.have.status(200)
+      expect(res.body).to.deep.equal({ ...expectHero, profile: expectProfile })
+    })
+  })
 })
