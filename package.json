@@ -16,6 +16,7 @@
     "~config": "file:config",
     "~entity": "file:src/entity",
     "~server": "file:src/server",
+    "~service": "file:src/service",
     "axios": "^0.24.0",
     "express": "^4.17.1"
   },

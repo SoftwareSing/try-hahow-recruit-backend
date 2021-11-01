@@ -1,5 +1,6 @@
 const HeroRepo = require('~entity/hero/HeroRepo')
 const HeroProfileRepo = require('~entity/heroProfile/HeroProfileRepo')
+const AuthService = require('~service/AuthService')
 const HttpError = require('~common/error/HttpError')
 
 exports.getHero = function ({ heroId, name, password }) {
@@ -14,6 +15,7 @@ async function getHero (heroId) {
 }
 
 async function getHeroWithAuth (heroId, { name, password }) {
+  if (!await AuthService.verifyNamePassword(name, password)) throw new HttpError(401, 'auth failed')
   const hero = await getHeroOrThrow(heroId)
   const heroProfile = await HeroProfileRepo.get(heroId)
 

@@ -31,11 +31,13 @@ describe('GET /heroes/:heroId', function () {
   })
 
   describe('with auth', function () {
-    const name = 'hahow'
-    const password = 'rocks'
+    let name = 'hahow'
+    let password = 'rocks'
     let expectProfile = {}
 
     beforeEach(async function () {
+      name = 'hahow'
+      password = 'rocks';
       ({ data: expectProfile } = await httpSend('GET', `https://hahow-recruit.herokuapp.com/heroes/${heroId}/profile`))
     })
 
@@ -45,6 +47,22 @@ describe('GET /heroes/:heroId', function () {
         .set('Password', password)
         .send()
     }
+
+    it('should return status 401 if name error', async function () {
+      name = faker.lorem.word()
+
+      const res = await getResponse()
+      expect(res).to.have.status(401)
+      expect(res.body).to.deep.equal({ error: 'auth failed' })
+    })
+
+    it('should return status 401 if password error', async function () {
+      name = faker.random.alphaNumeric(faker.datatype.number({ min: 3, max: 20 }))
+
+      const res = await getResponse()
+      expect(res).to.have.status(401)
+      expect(res.body).to.deep.equal({ error: 'auth failed' })
+    })
 
     it('should return hero with profile', async function () {
       const res = await getResponse()
