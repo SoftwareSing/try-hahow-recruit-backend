@@ -7,7 +7,10 @@ const heroRouter = express.Router()
 
 heroRouter.route('/')
   .get(getReqHandleFunc((req) => {
-    return HeroController.listHeroes()
+    return HeroController.listHeroes({
+      name: req.header('name'),
+      password: req.header('password')
+    })
   }))
 heroRouter.route('/:heroId')
   .get(getReqHandleFunc((req) => {
