@@ -57,7 +57,7 @@ describe('GET /heroes/:heroId', function () {
     })
 
     it('should return status 401 if password error', async function () {
-      name = faker.random.alphaNumeric(faker.datatype.number({ min: 3, max: 20 }))
+      password = faker.random.alphaNumeric(faker.datatype.number({ min: 3, max: 20 }))
 
       const res = await getResponse()
       expect(res).to.have.status(401)
