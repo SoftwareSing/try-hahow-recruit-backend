@@ -1,7 +1,7 @@
 const faker = require('faker')
 const { expect } = require('chai')
 
-const { httpSend } = require('~common/utils/httpSend')
+const { callHahowApi } = require('~common/utils/callHahowApi')
 const { appRequest } = require('../appRequest')
 
 describe('GET /heroes', function () {
@@ -10,7 +10,7 @@ describe('GET /heroes', function () {
   let expectHeroes = []
 
   before(async function () {
-    ({ data: expectHeroes } = await httpSend('GET', 'https://hahow-recruit.herokuapp.com/heroes'))
+    ({ data: expectHeroes } = await callHahowApi('GET', '/heroes'))
   })
 
   const getResponse = function () {
@@ -33,7 +33,7 @@ describe('GET /heroes', function () {
     before(async function () {
       expectAuthHeroes = await Promise.all(
         expectHeroes.map(async (hero) => {
-          const { data } = await httpSend('GET', `https://hahow-recruit.herokuapp.com/heroes/${hero.id}/profile`)
+          const { data } = await callHahowApi('GET', `/heroes/${hero.id}/profile`)
           return { ...hero, profile: data }
         })
       )
