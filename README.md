@@ -2,6 +2,11 @@
 
 這份專案嘗試實作 [Hahow Backend Engineer 徵才小專案](https://github.com/hahow/hahow-recruit/blob/05d2634b6718bcf54e8d3153e778a0f1fe1273bb/backend.md) 來練習
 
+實作結果可以在以下網址查看
+
+- <https://hahow-recruit-backend.softwaresing.com/heroes>
+- <https://hahow-recruit-backend.softwaresing.com/heroes/1>
+
 ## 啟動 server
 
 1. 安裝 Node.js  
