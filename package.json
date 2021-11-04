@@ -6,6 +6,7 @@
   "scripts": {
     "lint": "eslint .",
     "server_dev": "NODE_ENV=development node ./src/server/main.js",
+    "server_pm2_prod": "pm2 reload ecosystem.server.config.js --env production",
     "server_test": "NODE_ENV=test mocha --recursive ./test/integration-test/server",
     "test": "npm run server_test"
   },
