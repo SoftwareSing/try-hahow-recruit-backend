@@ -13,7 +13,7 @@
    本專案實作時使用 `node v16.13.0 (npm v8.1.0)`
 2. 安裝依賴的 package ( `npm install` )
 3. 使用 `npm run server_dev` 啟動 server  
-   server 將會使用 port 3000  
+   server 將會使用 port 3100 (可以在 [config/serverConfig](/config/serverConfig.js) 內修改)  
    使用 `ctrl + c` 可以關閉 server
 
 ### 測試 server
