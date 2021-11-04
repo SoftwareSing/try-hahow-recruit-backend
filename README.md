@@ -1,5 +1,7 @@
 # try-hahow-recruit-backend
 
+[![JavaScript Style Guide](/doc/img/badge.svg)](https://github.com/standard/standard)
+
 這份專案嘗試實作 [Hahow Backend Engineer 徵才小專案](https://github.com/hahow/hahow-recruit/blob/05d2634b6718bcf54e8d3153e778a0f1fe1273bb/backend.md) 來練習
 
 實作結果可以在以下網址查看
