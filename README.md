@@ -18,13 +18,13 @@
 或是使用以下指令手動測試 API
 
 ```sh
-curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:3000/heroes
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:3100/heroes
 
-curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:3000/heroes/1
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X GET http://localhost:3100/heroes/1
 
-curl -H "Accept: application/json" -H "Content-Type: application/json" -H "Name: hahow" -H "Password: rocks" -X GET http://localhost:3000/heroes
+curl -H "Accept: application/json" -H "Content-Type: application/json" -H "Name: hahow" -H "Password: rocks" -X GET http://localhost:3100/heroes
 
-curl -H "Accept: application/json" -H "Content-Type: application/json" -H "Name: hahow" -H "Password: rocks" -X GET http://localhost:3000/heroes/1
+curl -H "Accept: application/json" -H "Content-Type: application/json" -H "Name: hahow" -H "Password: rocks" -X GET http://localhost:3100/heroes/1
 ```
 
 ## 第三方 library

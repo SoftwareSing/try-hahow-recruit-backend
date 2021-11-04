@@ -1,5 +1,7 @@
 const http = require('http')
 
+const { ENV } = require('~config/env')
+const { port } = require('~config/serverConfig')
 const { expressApp } = require('./expressApp')
 
 function main () {
@@ -15,12 +17,10 @@ function main () {
 }
 
 function startServer (SERVER) {
-  const port = process.env.PORT || 3000
-
   SERVER.listen(port, () => {
     console.log('server running')
     console.log(`port: ${port}`)
-    console.log(`environment: ${process.env.NODE_ENV}`)
+    console.log(`environment: ${ENV}`)
   })
 }
 
