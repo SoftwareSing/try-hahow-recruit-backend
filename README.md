@@ -34,6 +34,127 @@ curl -H "Accept: application/json" -H "Content-Type: application/json" -H "Name:
 curl -H "Accept: application/json" -H "Content-Type: application/json" -H "Name: hahow" -H "Password: rocks" -X GET http://localhost:3100/heroes/1
 ```
 
+## 架構
+
+架構參考 <https://youtu.be/gX5oB4fgX6U?t=2568> 的作法
+
+### 元件間的關聯
+
+```mermaid
+classDiagram
+direction TB
+
+  HeroRepo ..> Hero
+  HeroProfileRepo ..> HeroProfile
+  HeroProfileRepo --> HahowAPI
+  
+  AuthService --> HahowAPI
+  HeroRepo --> HahowAPI
+  
+  HeroController --> HeroRepo
+  HeroController --> HeroProfileRepo
+  HeroController --> AuthService
+
+  HeroRouter --> HeroController
+  ApiRouter --> HeroRouter
+  ExpressApp --> ApiRouter
+
+  class HahowAPI {
+     <<系統外API>>
+  }
+
+  class Hero {
+     <<Entity>>
+     String id
+     String name
+     String image
+  }
+
+  class HeroProfile {
+     <<Entity>>
+     String heroId
+     Number str
+     Number int
+     Number agi
+     Number luk
+  }
+
+  class HeroRepo {
+     <<Repository>>
+     getList() Array~Hero~
+     get(String: heroId) Hero
+  }
+
+  class HeroProfileRepo {
+     <<Repository>>
+     get(String: heroId) HeroProfile
+  }
+
+  class AuthService {
+     <<Service>>
+     verifyNamePassword(String: name, String: password) Boolean
+  }
+
+  class HeroController {
+     getHero(String: heroId, String: name, String: password)
+     listHeroes(String: name, String: password)
+  }
+```
+
+當一個 request 進來，首先會通過 `router` 的部份  
+`router` 會針對不同的路徑，從 request 取得需要的參數並傳給對應的 `controller` 方法
+
+`controller` 會依照接到的參數做對應的處理  
+由於在 `router` 已經處理了 request 的參數，因此 `controller` 並不會碰到 request 與 response 的處理，這樣也方便之後若需抽換掉 express ，只需要修改 routing 的部份即可
+
+接著 `controller` 會透過 `service` 或 `repository` 來取得 `entity` 或是處理資料  
+`service` 通常我會放一些需要多個 `repository` 的操作，或是一些對外部服務的處理  
+`repository` 則是用來從資料庫等地方取得資料並轉換成 `entity` 回傳，針對資料庫的操作都會在 `repository` 內完成，若需要替換掉資料庫，或是增加快取，則只要修改 `repository` 即可  
+`entity` 則是專案中最基本的物件，不受外部影響的商業邏輯會寫在這裡
+
+以這個專案的例子來說，由於我沒辦法直接拿到 user 的資料，因此我將驗證服務(POST /auth)視為一個外部的服務，透過 `AuthService` 來呼叫驗證  
+若是一般資料庫內有 user 的情況，則我通常會改成建立一個 `User` 的 entity ，並透過呼叫 `user.verifyPassword(password)` 等方式來驗證
+
+而 Hero 與 HeroProfile 因為都可以拿到資料，因此我將 Hahow 提供的 API 當作資料庫來處理，將取得的方法放在 HeroRepo 與 HeroProfileRepo 中  
+若需要加上快取，或是將資料改放在自己的資料庫中，只要修改 repo 內的邏輯，不需要動到 controller 或其他部份
+
+### 呼叫流程
+
+這邊以呼叫 /heroes/:heroId 的流程為例來畫 sequence diagram
+
+```mermaid
+sequenceDiagram
+
+  actor user
+  participant Router
+  participant HeroController
+  participant AuthService
+  participant HeroRepo
+  participant HeroProfileRepo
+  participant HahowAPI
+
+  user ->> Router : request GET /heroes/:heroId
+  Router ->> HeroController : getHero()
+
+  HeroController ->> AuthService : verifyNamePassword()
+  AuthService ->> HahowAPI : POST /auth
+  HahowAPI -->> AuthService : reponse 200
+  AuthService -->> HeroController : true
+
+  HeroController ->> HeroRepo : get()
+  HeroRepo ->> HahowAPI : GET /heroes/:heroId
+  HahowAPI -->> HeroRepo : response hero data
+  HeroRepo -->> HeroController : Hero
+
+  HeroController ->> HeroProfileRepo : get()
+  HeroProfileRepo ->> HahowAPI : GET /heroes/:heroId/profile
+  HahowAPI -->> HeroProfileRepo : response hero profile data
+  HeroProfileRepo -->> HeroController : HeroProfile
+
+  HeroController -->> Router : hero data
+  Router -->> user : response hero data with profile
+```
+
 ## 第三方 library
 
 ### server 依賴項
