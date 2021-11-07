@@ -40,66 +40,7 @@ curl -H "Accept: application/json" -H "Content-Type: application/json" -H "Name:
 
 ### 元件間的關聯
 
-```mermaid
-classDiagram
-direction TB
-
-  HeroRepo ..> Hero
-  HeroProfileRepo ..> HeroProfile
-  HeroProfileRepo --> HahowAPI
-  
-  AuthService --> HahowAPI
-  HeroRepo --> HahowAPI
-  
-  HeroController --> HeroRepo
-  HeroController --> HeroProfileRepo
-  HeroController --> AuthService
-
-  HeroRouter --> HeroController
-  ApiRouter --> HeroRouter
-  ExpressApp --> ApiRouter
-
-  class HahowAPI {
-     <<系統外API>>
-  }
-
-  class Hero {
-     <<Entity>>
-     String id
-     String name
-     String image
-  }
-
-  class HeroProfile {
-     <<Entity>>
-     String heroId
-     Number str
-     Number int
-     Number agi
-     Number luk
-  }
-
-  class HeroRepo {
-     <<Repository>>
-     getList() Array~Hero~
-     get(String: heroId) Hero
-  }
-
-  class HeroProfileRepo {
-     <<Repository>>
-     get(String: heroId) HeroProfile
-  }
-
-  class AuthService {
-     <<Service>>
-     verifyNamePassword(String: name, String: password) Boolean
-  }
-
-  class HeroController {
-     getHero(String: heroId, String: name, String: password)
-     listHeroes(String: name, String: password)
-  }
-```
+![class diagram](/doc/img/classDiagram.svg)
 
 當一個 request 進來，首先會通過 `router` 的部份  
 `router` 會針對不同的路徑，從 request 取得需要的參數並傳給對應的 `controller` 方法
@@ -122,38 +63,7 @@ direction TB
 
 這邊以呼叫 /heroes/:heroId 的流程為例來畫 sequence diagram
 
-```mermaid
-sequenceDiagram
-
-  actor user
-  participant Router
-  participant HeroController
-  participant AuthService
-  participant HeroRepo
-  participant HeroProfileRepo
-  participant HahowAPI
-
-  user ->> Router : request GET /heroes/:heroId
-  Router ->> HeroController : getHero()
-
-  HeroController ->> AuthService : verifyNamePassword()
-  AuthService ->> HahowAPI : POST /auth
-  HahowAPI -->> AuthService : reponse 200
-  AuthService -->> HeroController : true
-
-  HeroController ->> HeroRepo : get()
-  HeroRepo ->> HahowAPI : GET /heroes/:heroId
-  HahowAPI -->> HeroRepo : response hero data
-  HeroRepo -->> HeroController : Hero
-
-  HeroController ->> HeroProfileRepo : get()
-  HeroProfileRepo ->> HahowAPI : GET /heroes/:heroId/profile
-  HahowAPI -->> HeroProfileRepo : response hero profile data
-  HeroProfileRepo -->> HeroController : HeroProfile
-
-  HeroController -->> Router : hero data
-  Router -->> user : response hero data with profile
-```
+![sequence diagram](/doc/img/sequenceDiagram.svg)
 
 ## 第三方 library
 
