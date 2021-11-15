@@ -3,7 +3,7 @@ const { httpSend } = require('./httpSend')
 
 /**
  * 協助 call hahow 的 API ，會在 API 出現 status 200 的錯誤時自動重試，最多嘗試3次
- * 因為 API 太長錯誤了，因此這邊會做自動重試，重試後仍錯誤才會丟出錯誤
+ * 因為 API 太常錯誤了，因此這邊會做自動重試，重試後仍錯誤才會丟出錯誤
  * @param {'GET' | 'POST'} method
  * @param {String} path
  * @param {Any} [data]
